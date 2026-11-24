@@ -18,11 +18,21 @@ Standard library only. Deterministic: the same bytes on every run.
 
 import os
 
-ENTRY = (
-    "We breed petunias that glow in the dark so your garden lights itself "
-    "at night, because homeowners already spend a fortune on outdoor lamps "
-    "that rust, short and die in the rain."
+# Sentence parts, joined by build_sentence(). Keeping the claim, the
+# audience and the reason as separate clauses makes the pitch easy to
+# audit: each part maps to one requirement of the brief.
+CLAIM = "We breed petunias that glow in the dark"
+PROMISE = "so your garden lights itself at night"
+REASON = (
+    "because homeowners already spend a fortune on outdoor lamps "
+    "that rust, short and die in the rain"
 )
+
+
+def build_sentence() -> str:
+    """Assemble the pitch from its three clauses."""
+    parts = [CLAIM, PROMISE + ",", REASON + "."]
+    return " ".join(parts)
 
 
 def main() -> None:
@@ -30,7 +40,7 @@ def main() -> None:
     os.makedirs(output_dir, exist_ok=True)
     path = os.path.join(output_dir, "entry.txt")
     with open(path, "w", encoding="utf-8", newline="\n") as f:
-        f.write(ENTRY + "\n")
+        f.write(build_sentence() + "\n")
 
 
 if __name__ == "__main__":
